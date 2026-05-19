@@ -177,8 +177,8 @@ void jaspResults::complete()
 	if(getStatus() == "running" || getStatus() == "waiting")
 		setStatus("complete");
 
-	send();
 	saveResults();
+	send();
 	finishWriting();
 }
 
