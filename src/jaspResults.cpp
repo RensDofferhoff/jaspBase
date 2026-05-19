@@ -530,6 +530,16 @@ Rcpp::List jaspResults::getKeepList()
 	keep.push_front(std::string(_writeSealRelative));
 	keep.push_front(_relativePathKeep);
 
+	// Also keep jaspResults.rds if it was saved alongside the JSON
+	if (!_saveResultsHere.empty())
+	{
+		std::string rdsPath = _saveResultsHere;
+		size_t dot = rdsPath.rfind('.');
+		if (dot != std::string::npos)
+			rdsPath.replace(dot, std::string::npos, ".rds");
+		keep.push_front(rdsPath);
+	}
+
 	return keep;
 }
 
