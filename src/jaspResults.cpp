@@ -205,6 +205,18 @@ void jaspResults::saveResults()
 	saveHere << convertToJSON() << std::flush;
 	saveHere.close();
 
+	// Also write results as an RDS file alongside the JSON
+	std::string rdsPath = _saveResultsRoot + _saveResultsHere;
+	size_t dotPos = rdsPath.rfind(".json");
+	if(dotPos != std::string::npos)
+		rdsPath.replace(dotPos, 5, ".rds");
+	else
+		rdsPath += ".rds";
+
+	Rcpp::Function saveRDS("saveRDS");
+	saveRDS(toRObject(), rdsPath);
+	jaspPrint("Saved jaspResults as RDS to: '" + rdsPath + "'");
+
 	JASP_OBJECT_TIMEREND(saveResults)
 }
 
